@@ -2,16 +2,18 @@ apply plugin: 'com.android.application'
 
 android {
 
-    compileSdkVersion Integer.parseInt(project.ANDROID_BUILD_SDK_VERSION)
-    buildToolsVersion project.ANDROID_BUILD_TOOLS_VERSION
+    compileSdkVersion 25//Integer.parseInt(project.ANDROID_BUILD_SDK_VERSION)
+//    buildToolsVersion project.ANDROID_BUILD_TOOLS_VERSION
 
+    buildToolsVersion '28.0.3'
     //useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
-        applicationId project.ANDROID_BUILD_APP_PKG
-        targetSdkVersion Integer.parseInt(project.ANDROID_BUILD_TARGET_SDK_VERSION)
-        versionCode Integer.parseInt(project.ANDROID_BUILD_VERSION_CODE)
-        versionName project.ANDROID_BUILD_VERSION_NAME
+        minSdkVersion 18
+        applicationId 'com.apicloud.pkg.sdk'//project.ANDROID_BUILD_APP_PKG
+        targetSdkVersion 25//Integer.parseInt(project.ANDROID_BUILD_TARGET_SDK_VERSION)
+        versionCode 1//Integer.parseInt(project.ANDROID_BUILD_VERSION_CODE)
+        versionName '1'//project.ANDROID_BUILD_VERSION_NAME
 	    multiDexEnabled true
     }
 
@@ -25,7 +27,6 @@ android {
         }
     }
 
-    buildToolsVersion '26.0.2'
 }
 
 repositories{

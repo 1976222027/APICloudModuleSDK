@@ -2,7 +2,7 @@
 	"modules":[
 		{
 			"name":"modulePrinter",
-			"class":"com.apicloud.usbPrinter.UsbPrinter"
+			"class":"com.apicloud.myusbprint.UsbPrinter"
 		},
 		{
 			"name":"moduleDemo",

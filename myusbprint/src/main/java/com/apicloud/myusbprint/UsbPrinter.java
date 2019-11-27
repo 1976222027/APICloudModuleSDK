@@ -92,7 +92,7 @@ public class UsbPrinter extends UZModule implements PrinterUtils.PrinterCallBack
 
             @Override
             public void beDefeated(String details) {
-                Log.e("MainActivity", "链接失败");
+                Log.e("MainActivity", "链接失败"+details);
                 printerUtils.showToast(details);
             }
         });
