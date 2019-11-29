@@ -1,4 +1,4 @@
-package com.apicloud.myusbprint;
+package com.apicloud.myusbprint.out;
 
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -6,10 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
 import android.os.IBinder;
@@ -18,13 +14,6 @@ import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
-
-import com.google.zxing.EncodeHintType;
-import com.google.zxing.WriterException;
-import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
-import com.google.zxing.qrcode.encoder.ByteMatrix;
-import com.google.zxing.qrcode.encoder.Encoder;
-import com.google.zxing.qrcode.encoder.QRCode;
 import com.gprinter.aidl.GpService;
 import com.gprinter.command.EscCommand;
 import com.gprinter.command.GpCom;
@@ -39,7 +28,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -92,9 +80,9 @@ public class PrinterUtils {
         }
     }
 
-    public void initUsb() {
-        initUSBDevices();
-    }
+//    public void initUsb() {
+//        initUSBDevices();
+//    }
 
     class PrinterServiceConnection implements ServiceConnection {
         @Override
@@ -170,7 +158,7 @@ public class PrinterUtils {
     /**
      * 链接USB打印设备
      */
-    private void initUSBDevices() {
+    private void  initUSBDevices() {
         int rel = 0;
         if (TextUtils.isEmpty(DeviceName)) {
             if (usBprinterCallBack != null) {
@@ -321,14 +309,14 @@ public class PrinterUtils {
                     } else {
                         esc.addSelectJustification(EscCommand.JUSTIFICATION.CENTER);
                     }
-                    if (2 == isInstruction) {
-                        try {
-                            Bitmap bmp = encodeQRCode(datas, ErrorCorrectionLevel.L, 8);
-                            esc.addRastBitImage(bmp, 100, 0);
-                        } catch (WriterException e) {
-                            e.printStackTrace();
-                        }
-                    } else {
+//                    if (2 == isInstruction) {
+//                        try {
+//                            Bitmap bmp = encodeQRCode(datas, ErrorCorrectionLevel.L, 8);
+//                            esc.addRastBitImage(bmp, 100, 0);
+//                        } catch (WriterException e) {
+//                            e.printStackTrace();
+//                        }
+//                    } else {
                         // 设置纠错等级
                         esc.addSelectErrorCorrectionLevelForQRCode((byte) 0x31);
                         // 设置qrcode模块大小
@@ -336,7 +324,7 @@ public class PrinterUtils {
                         // 设置qrcode内容
                         esc.addStoreQRCodeData(datas);
                         esc.addPrintQRCode();// 打印QRCode
-                    }
+//                    }
                 } else if ("printTitle".equals(rowtype)) {
                     String text = itemDataObj.optString("text");
                     String alignment = itemDataObj.optString("alignment", "left");
@@ -434,6 +422,7 @@ public class PrinterUtils {
         int rs;
         try {
             rs = mGpService.sendEscCommand(PrinterId, sss);
+            Log.e("mhy打印内容",sss);
             GpCom.ERROR_CODE r = GpCom.ERROR_CODE.values()[rs];
             if (r != GpCom.ERROR_CODE.SUCCESS) {
                 Toast.makeText(context, GpCom.getErrorText(r), Toast.LENGTH_SHORT).show();
@@ -469,34 +458,34 @@ public class PrinterUtils {
         return c / k == 0;
     }
     //zxing二维码
-    private Bitmap encodeQRCode(String text, ErrorCorrectionLevel errorCorrectionLevel,
-                                int scale) throws WriterException {
-        Hashtable<EncodeHintType, Object> hints = new Hashtable<EncodeHintType, Object>();
-        hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
-        hints.put(EncodeHintType.ERROR_CORRECTION, errorCorrectionLevel);
-//        QRCode code = new QRCode();
-//        Encoder.encode(text, errorCorrectionLevel, hints, code);
-        QRCode code = Encoder.encode(text, errorCorrectionLevel, hints);
-        final ByteMatrix m = code.getMatrix();
-        final int mw = m.getWidth();
-        final int mh = m.getHeight();
-        final int IMG_WIDTH = mw * scale;
-        final int IMG_HEIGHT = mh * scale;
-        Bitmap bmp = Bitmap.createBitmap(IMG_WIDTH, IMG_HEIGHT, Bitmap.Config.RGB_565);
-        Canvas c = new Canvas(bmp);
-        Paint p = new Paint();
-        c.drawColor(Color.WHITE);
-        p.setColor(Color.BLACK);
-        for (int y = 0; y < mh; y++) {
-            for (int x = 0; x < mw; x++) {
-                if (m.get(x, y) == 1) {
-                    c.drawRect(x * scale, y * scale,
-                            (x + 1) * scale, (y + 1) * scale, p);
-                }
-            }
-        }
-        return bmp;
-    }
+//    private Bitmap encodeQRCode(String text, ErrorCorrectionLevel errorCorrectionLevel,
+//                                int scale) throws WriterException {
+//        Hashtable<EncodeHintType, Object> hints = new Hashtable<EncodeHintType, Object>();
+//        hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
+//        hints.put(EncodeHintType.ERROR_CORRECTION, errorCorrectionLevel);
+////        QRCode code = new QRCode();
+////        Encoder.encode(text, errorCorrectionLevel, hints, code);
+//        QRCode code = Encoder.encode(text, errorCorrectionLevel, hints);
+//        final ByteMatrix m = code.getMatrix();
+//        final int mw = m.getWidth();
+//        final int mh = m.getHeight();
+//        final int IMG_WIDTH = mw * scale;
+//        final int IMG_HEIGHT = mh * scale;
+//        Bitmap bmp = Bitmap.createBitmap(IMG_WIDTH, IMG_HEIGHT, Bitmap.Config.RGB_565);
+//        Canvas c = new Canvas(bmp);
+//        Paint p = new Paint();
+//        c.drawColor(Color.WHITE);
+//        p.setColor(Color.BLACK);
+//        for (int y = 0; y < mh; y++) {
+//            for (int x = 0; x < mw; x++) {
+//                if (m.get(x, y) == 1) {
+//                    c.drawRect(x * scale, y * scale,
+//                            (x + 1) * scale, (y + 1) * scale, p);
+//                }
+//            }
+//        }
+//        return bmp;
+//    }
 
 
     /**
@@ -505,34 +494,34 @@ public class PrinterUtils {
     public void sendReceipt() {
 
         EscCommand esc = new EscCommand();
-        esc.addInitializePrinter();
-        esc.addPrintAndFeedLines((byte) 3);
-        esc.addSelectJustification(EscCommand.JUSTIFICATION.CENTER);// 设置打印居中
-        esc.addSelectPrintModes(EscCommand.FONT.FONTA, EscCommand.ENABLE.OFF, EscCommand.ENABLE.ON, EscCommand.ENABLE.ON, EscCommand.ENABLE.OFF);// 设置为倍高倍宽
-        esc.addText("Sample\n"); // 打印文字
-        esc.addPrintAndLineFeed();
-
-        /* 打印文字 */
-        esc.addSelectPrintModes(EscCommand.FONT.FONTA, EscCommand.ENABLE.OFF, EscCommand.ENABLE.OFF, EscCommand.ENABLE.OFF, EscCommand.ENABLE.OFF);// 取消倍高倍宽
-        esc.addSelectJustification(EscCommand.JUSTIFICATION.LEFT);// 设置打印左对齐
-        esc.addText("Print text\n"); // 打印文字
-        esc.addText("Welcome to use SMARNET printer!\n"); // 打印文字
-
-        /* 打印繁体中文 需要打印机支持繁体字库 */
-        String message = "佳博智匯票據打印機\n";
-        // esc.addText(message,"BIG5");
-        esc.addText(message, "GB2312");
-        esc.addPrintAndLineFeed();
-
-        /* 绝对位置 具体详细信息请查看GP58编程手册 */
-        esc.addText("智汇");
-        esc.addSetHorAndVerMotionUnits((byte) 7, (byte) 0);
-        esc.addSetAbsolutePrintPosition((short) 6);
-        esc.addText("网络");
-        esc.addSetAbsolutePrintPosition((short) 10);
-        esc.addText("设备");
-        esc.addPrintAndLineFeed();
-
+//        esc.addInitializePrinter();
+//        esc.addPrintAndFeedLines((byte) 3);
+//        esc.addSelectJustification(EscCommand.JUSTIFICATION.CENTER);// 设置打印居中
+//        esc.addSelectPrintModes(EscCommand.FONT.FONTA, EscCommand.ENABLE.OFF, EscCommand.ENABLE.ON, EscCommand.ENABLE.ON, EscCommand.ENABLE.OFF);// 设置为倍高倍宽
+//        esc.addText("Sample\n"); // 打印文字
+//        esc.addPrintAndLineFeed();
+//
+//        /* 打印文字 */
+//        esc.addSelectPrintModes(EscCommand.FONT.FONTA, EscCommand.ENABLE.OFF, EscCommand.ENABLE.OFF, EscCommand.ENABLE.OFF, EscCommand.ENABLE.OFF);// 取消倍高倍宽
+//        esc.addSelectJustification(EscCommand.JUSTIFICATION.LEFT);// 设置打印左对齐
+//        esc.addText("Print text\n"); // 打印文字
+//        esc.addText("Welcome to use SMARNET printer!\n"); // 打印文字
+//
+//        /* 打印繁体中文 需要打印机支持繁体字库 */
+//        String message = "佳博智匯票據打印機\n";
+//        // esc.addText(message,"BIG5");
+//        esc.addText(message, "GB2312");
+//        esc.addPrintAndLineFeed();
+//
+//        /* 绝对位置 具体详细信息请查看GP58编程手册 */
+//        esc.addText("智汇");
+//        esc.addSetHorAndVerMotionUnits((byte) 7, (byte) 0);
+//        esc.addSetAbsolutePrintPosition((short) 6);
+//        esc.addText("网络");
+//        esc.addSetAbsolutePrintPosition((short) 10);
+//        esc.addText("设备");
+//        esc.addPrintAndLineFeed();
+//
 
         /* 打印一维条码 */
         esc.addText("Print code128\n"); // 打印文字
@@ -555,7 +544,7 @@ public class PrinterUtils {
 
         /* 打印文字 */
         esc.addSelectJustification(EscCommand.JUSTIFICATION.CENTER);// 设置打印左对齐
-        esc.addText("Completed!\r\n"); // 打印结束
+        esc.addText("打印结束!\r\n"); // 打印结束
         // 开钱箱
         esc.addGeneratePlus(LabelCommand.FOOT.F5, (byte) 255, (byte) 255);
         esc.addPrintAndFeedLines((byte) 8);
@@ -727,10 +716,10 @@ public class PrinterUtils {
         this.callBack = callBack;
     }
 
-
-    public static UsbDevice getUsbDeviceFromName(Context context, String usbName) {
-        UsbManager usbManager = (UsbManager) context.getSystemService(Context.USB_SERVICE);
-        HashMap<String,UsbDevice> usbDeviceList = usbManager.getDeviceList();
-        return usbDeviceList.get(usbName);
-    }
+//
+//    public static UsbDevice getUsbDeviceFromName(Context context, String usbName) {
+//        UsbManager usbManager = (UsbManager) context.getSystemService(Context.USB_SERVICE);
+//        HashMap<String,UsbDevice> usbDeviceList = usbManager.getDeviceList();
+//        return usbDeviceList.get(usbName);
+//    }
 }

@@ -63,6 +63,12 @@
             uzmoduledemo.openCashBox(function(ret){
 	         alert(JSON.stringify(ret));
 	   });
+	   }
+	   //关闭
+	    function closeBr(){
+            uzmoduledemo.closeBr(function(ret){
+	         alert(JSON.stringify(ret));
+	   });
         }
 
     </script>
@@ -75,6 +81,7 @@
         <div class="clickbtn" tapmode="active" onclick="initPrint()">初始化</div>
         <div class="clickbtn" tapmode="active" onclick="printData()">打印数据</div>
         <div class="clickbtn" tapmode="active" onclick="openCashBox()">打开钱箱</div>
+        <div class="clickbtn" tapmode="active" onclick="closeBr()">关闭USB广播</div>
     </div>
 </div>
 </body>

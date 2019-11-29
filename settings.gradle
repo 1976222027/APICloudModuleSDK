@@ -1,1 +1,1 @@
-include ':app', ':moduleDemo', ':usbPrinter', ':myusbprint'
+include ':app', ':moduleDemo', ':usbPrinter', ':myusbprint', ':print'

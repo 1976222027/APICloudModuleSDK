@@ -220,9 +220,9 @@ public class UsbPrinter extends UZModule {
         return mContext;
     }
 
-    boolean isXpriner;
+    boolean isXpriner;//是否芯烨打印机
     UsbPrinters p;
-
+//请求权限
     public void jsmethod_requestPermission(UZModuleContext moduleContext) {
 //        isJiabo = moduleContext.optBoolean("isJiaBo");
 //        if (isJiabo) {
@@ -439,7 +439,7 @@ public class UsbPrinter extends UZModule {
             }).start();
         } else if (type.equals("usb")) {
             getUsbDeviceList();
-            UsbManager usbManager = (UsbManager) getContext().getSystemService(Context.USB_SERVICE);
+//             usbManager = (UsbManager) getContext().getSystemService(Context.USB_SERVICE);
 //            if (DeviceConnFactoryManager.getDeviceConnFactoryManagers()[id] != null && DeviceConnFactoryManager.getDeviceConnFactoryManagers()[id].mPort != null) {
 //                JSONObject ret = new JSONObject();
 //                try {
@@ -512,11 +512,11 @@ public class UsbPrinter extends UZModule {
             });
         }
     }
-
+    UsbManager usbManager;
     public void getUsbDeviceList() {
-        UsbManager manager = (UsbManager) getContext().getSystemService(Context.USB_SERVICE);
+         usbManager = (UsbManager) getContext().getSystemService(Context.USB_SERVICE);
         // Get the list of attached devices
-        HashMap<String, UsbDevice> devices = manager.getDeviceList();
+        HashMap<String, UsbDevice> devices = usbManager.getDeviceList();
         Iterator<UsbDevice> deviceIterator = devices.values().iterator();
         int count = devices.size();
         Log.d(DEBUG_TAG, "count " + count);

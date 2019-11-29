@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.apicloud.myusbprint">
+
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -21,24 +22,10 @@
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <uses-feature android:name="android.hardware.usb.host" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <application >
-        <activity android:name="InitUSBActivity">
-            <intent-filter>
-                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.hardware.usb.action.USB_DEVICE_DETACHED" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
-                android:resource="@xml/device_filter" />
-            <meta-data
-                android:name="android.hardware.usb.action.USB_DEVICE_DETACHED"
-                android:resource="@xml/device_filter" />
-        </activity>
+    <application>
         <!--佳博打印服务-->
         <service
             android:name="com.gprinter.service.GpPrintService"
@@ -49,6 +36,6 @@
                 <action android:name="com.gprinter.aidl.GpPrintService" />
             </intent-filter>
         </service>
-        <service android:name="com.gprinter.service.AllService"/>
+        <service android:name="com.gprinter.service.AllService" />
     </application>
 </manifest>

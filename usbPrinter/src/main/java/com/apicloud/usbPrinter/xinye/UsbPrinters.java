@@ -30,45 +30,6 @@ public class UsbPrinters {
             34918, 1137, 1659, 1137, 1155, 26728, 17224, 7358
     };
 
-//    public static boolean isUsbPrinterDevice(final UsbDevice usbDevice) {
-//        final int vid = usbDevice.getVendorId();
-//        final int pid = usbDevice.getProductId();
-//
-////        return vid == 34918;
-//
-//		return (vid==34918) || 
-//				(vid==1137) || 
-//				(vid==1659) ||
-//				(vid==1137) || 
-//				(vid==1155) || 
-//				(vid==26728) || 
-//				(vid==17224) || 
-//				(vid==7358);	
-//    }
-
-
-//    private List<UsbDevice> findAllUsbPrinter() {
-//        final List<UsbDevice> result = new ArrayList<UsbDevice>();
-//
-//        Log.d(TAG, "find usb printer...");
-//        for (final UsbDevice usbDevice : mUsbManager.getDeviceList().values()) {
-////        	Log.d(TAG, String.format("usb %04X:%04X : device_id=%d, device_name=%s",
-////        			usbDevice.getVendorId(), usbDevice.getProductId(),
-////        			usbDevice.getDeviceId(), usbDevice.getDeviceName()));
-//            if (isUsbPrinterDevice(usbDevice)) {
-//            	Log.d(TAG, String.format("usb printer %04X:%04X : device_id=%d, device_name=%s",
-//            			usbDevice.getVendorId(), usbDevice.getProductId(),
-//            			usbDevice.getDeviceId(), usbDevice.getDeviceName()));
-//                result.add(usbDevice);
-//            }
-//        }
-//
-//        return result;
-//    }
-
-    /*
-     *
-     */
     public static UsbPrinters open(Context c, int vid, int pid) throws IOException {
         UsbUtil u = new UsbUtil(c);
         //for(UsbDevice d : u.findDevicesByVid(PRINTER_VID)) {
@@ -145,8 +106,7 @@ public class UsbPrinters {
         //mDevice = device;
         mInterface = iface;
         mEndpoint = epout;
-        UsbManager usbman = (UsbManager) context
-                .getSystemService(Context.USB_SERVICE);
+        UsbManager usbman = (UsbManager) context.getSystemService(Context.USB_SERVICE);
         mConnection = usbman.openDevice(device);
         if (mConnection == null) {
             throw new IOException("failed to open usb device.");
@@ -240,9 +200,7 @@ public class UsbPrinters {
         write(sb.toString().getBytes());
     }
 
-    public void printString(String string, FONT font, ALIGNMENT alignment, boolean bold,
-                            boolean underlined, boolean doubleHeight, boolean doubleWidth)
-            throws IOException {
+    public void printString(String string, FONT font, ALIGNMENT alignment, boolean bold, boolean underlined, boolean doubleHeight, boolean doubleWidth) throws IOException {
         selectFont(font);
         setFontStyleBold(bold);
         setFontStyleUnderline(underlined);
